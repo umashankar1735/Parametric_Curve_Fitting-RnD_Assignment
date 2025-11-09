@@ -9,13 +9,13 @@ y(t) &= 42 + t\sin(\theta) + e^{M|t|}\sin(0.3t)\cos(\theta)
 \end{aligned}
 $$
 
-with unknowns: \(\theta\) (radians), \(M\), and \(X\). Bounds used in the fit:
+with unknowns: $\theta$ (radians), $M$, and $X$.
 
-- \(0^\circ < \theta < 50^\circ\)
-- \(-0.05 < M < 0.05\)
-- \(0 < X < 100\)
-- parameter t range: \(6 < t < 60\)
-
+**Bounds used in the fit:**
+- $0^\circ < \theta < 50^\circ$
+- $-0.05 < M < 0.05$
+- $0 < X < 100$
+- parameter range: $6 < t < 60$
 ---
 ## What does the curve means(my understanding)
 
@@ -38,11 +38,10 @@ model, and how the code implements the estimator.
 
 1) Problem statement and model
 	 - We are given 2D points (x, y) that lie on a curve parameterized by t
-		 (unknown perpendicular-point parameter) and three global unknowns: \(\theta\),
-		 \(M\), and \(X\). 
+		 (unknown perpendicular-point parameter) and three global unknowns: $\theta$, $M$, and $X$.
          The parametric equations are:
-		 x(t) = t*cos(θ) - e^{M|t|} * sin(0.3 t) * sin(θ) + X
-		 y(t) = 42 + t*sin(θ) + e^{M|t|} * sin(0.3 t) * cos(θ)
+         $x(t) = t\cos(\theta) - e^{M|t|}\sin(0.3t)\sin(\theta) + X$ and 
+         $y(t) = 42 + t\sin(\theta) + e^{M|t|}\sin(0.3t)\cos(\theta)$.
 
 	 - Goal: estimate θ (orientation), M (amplitude growth), and X
 		 (global x offset) using the provided (x,y) samples which are in "xy_data.csv" for t in (6,60).
@@ -55,13 +54,13 @@ model, and how the code implements the estimator.
 3) High-level strategy (why this decomposition works)
 	 - The parametrization can be written as a straight centerline (a line with
 		 angle θ) plus a perpendicular oscillatory offset whose amplitude is
-		 a function exp(M|t|) times sin(0.3 t). If we find θ and X, the data can
+		 a function $e^{M|t|}$ times sin(0.3 t). If we find θ and X, the data can
 		 be projected into a coordinate frame where the perpendicular offsets
 		 (d values) are a one-dimensional amplitude-only signal to fit for M.
 
 4) Step A — fit a centerline to initialize θ and X
 	 - Fit a simple linear model y ≈ slope * x + intercept by least-squares.
-	 - Convert slope(=tanθ) to θ = arctan(slope). 
+	 - Convert slope(m=tanθ) to θ = arctan(slope). 
          Use intercept(X,42) to produce an initial X: X = (42 - intercept) / slope. 
          This gives a robust starting point for the nonlinear refinement.
 
@@ -69,13 +68,13 @@ model, and how the code implements the estimator.
 	 - Define base_point(b) = (X, 42). Define two orthonormal vectors:
 		 u = (cos θ, sin θ) (along the centerline) and 
          n = (-sin θ, cos θ)(perpendicular).
-	 - For each data point, compute t_i = (p_i - b)·u and d_i = (p_i - b)·n.
-	 - The model predicts d_i ≈ exp(M * |t_i|) * sin(0.3 * t_i).
+	 - For each data point, compute $t_i$ = ($p_i$ - b)·u and d_i = ($p_i$ - b)·n.
+	 - The model predicts $d_i$ ≈ e^(M|tᵢ| * sin(0.3 * $t_i$).
 
 6) Step C — estimate M for a fixed (θ, X)
-	 - With t_i, d_i and sin(0.3 t_i) known, M is a single scalar. 
+	 - With $t_i$, $d_i$ and $sin(0.3 t_i)$ known, $M$ is a single scalar. 
         We search for M in the allowed interval and evaluate mean-squared error
-		mse(M) = mean((d_i - exp(M|t_i|) sin(0.3 t_i))^2).
+		mse(M) = mean((dᵢ − e^(M|tᵢ|) · sin(0.3tᵢ))²)
 	 - The code uses a ternary-like bracketed search over (-0.05,0.05) which is
 		 reliable and fast given the small interval.
 
@@ -133,10 +132,10 @@ Saved plot -> visualization.png
 
 ## What the code does?
 
-- Fits a centerline y ≈ s*x + c to the data; derives an initial \(\theta\) via \(\theta=\arctan(s)\) and an initial offset \(X\).
+- Fits a centerline y ≈ s*x + c to the data; derives an initial ($\theta$) via $\theta = \arctan(s)$ and an initial offset \(X\).
 - Rotates data into an along-line (t) and perpendicular (d) frame.
-- Solves for the scalar amplitude model `d(t) ≈ exp(M|t|)*sin(0.3 t)` by 1D search for M.
-- Uses a coordinate-descent loop to refine (\(\theta\), X) and re-fit M at each step.
+- Solves for the scalar amplitude model $d(t) \approx e^{M|t|}\sin(0.3t)$ by 1D search for M.
+- Uses a coordinate-descent loop to refine (\($\theta\$), X) and re-fit M at each step.
 - Computes a set-to-set L1 distance from sampled curve points to the nearest data points (reported in the run).
 
 These steps are implemented in `fit_curve.py` & these steps are in-detailed mentioned in the "Detailed Step-by-Step explanation" section in this readme file.
@@ -146,15 +145,17 @@ These steps are implemented in `fit_curve.py` & these steps are in-detailed ment
 
 I ran `fit_curve.py` on the attached `XY_DATA.csv` and obtained the final fitted parameters below. You can copy the Desmos/LaTeX string into Desmos or include the numeric form in your submission.
 
-- theta (radians): 0.523623214
-- theta (degrees): 30.001400
+- $\theta$(radians): 0.523623214
+- $\theta$(degrees): 30.001400
 - M: 0.030001685
 - X: 55.001164694
 - refit MSE: 7.650453719e-07
 
 Desmos/LaTeX string (final output):
 
-\\left(t*\\cos(0.523623)-e^{0.030002\\left|t\\right|}\\cdot\\sin(0.3t)\\sin(0.523623)+55.001165,\\ 42+t*\\sin(0.523623)+e^{0.030002\\left|t\\right|}\\cdot\\sin(0.3t)\\cos(0.523623)\\right)
+$$
+\left(t\cos(0.523623) - e^{0.030002\left|t\right|}\sin(0.3t)\sin(0.523623) + 55.001165,\; 42 + t\sin(0.523623) + e^{0.030002\left|t\right|}\sin(0.3t)\cos(0.523623)\right)
+$$
 
 
 ## Reproducing the L1 score used for assessment
@@ -168,7 +169,7 @@ If you prefer a different distance metric (for example, a symmetric set distance
 
 ## Notes, assumptions, and tips
 
-- The script enforces the bounds from the assignment when searching (theta in (0, 50 deg), M in (-0.05, 0.05), X in (0,100)).
+- The script enforces the bounds from the assignment when searching $\theta \in (0^\circ, 50^\circ)$, $M \in (-0.05, 0.05)$, $X \in (0, 100)$.
 - If `XY_DATA.csv` is missing, the script will raise `FileNotFoundError`.
 - The current algorithm uses brute-force nearest-neighbor L1 distance for the sample sizes in this task. If you scale-up, consider using KD-trees (scipy.spatial.cKDTree) and Euclidean distance for speed.
 - For reproducibility, commit `XY_DATA.csv` (if allowed), `fit_curve.py`, `README.md`, and `requirements.txt` to your repo.
