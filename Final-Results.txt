@@ -1,0 +1,14 @@
+Fitted parameters from fit_curve.py (run on provided XY_DATA.csv)
+
+theta (rad): 0.523623214
+theta (deg): 30.001400
+M           : 0.030001685
+X           : 55.001164694
+refit MSE   : 7.650453719e-07
+
+Desmos/LaTeX string (copy-paste into Desmos):
+\left(t*\cos(0.523623)-e^{0.030002\left|t\right|}\cdot\sin(0.3t)\sin(0.523623)+55.001165,\ 42+t*\sin(0.523623)+e^{0.030002\left|t\right|}\cdot\sin(0.3t)\cos(0.523623)\right)
+
+Notes:
+- visualization.png was saved by the script in the same folder.
+- The L1 (curve→data) mean distance reported by the script: 0.026346
