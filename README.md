@@ -2,12 +2,12 @@
 
 This repository contains code and visualizations for fitting the parametric curve
 
-\[
-x(t) = t\cos(\theta) - e^{M|t|}\sin(0.3t)\sin(\theta) + X
-\]
-\[
-y(t) = 42 + t\sin(\theta) + e^{M|t|}\sin(0.3t)\cos(\theta)
-\]
+$$
+\begin{aligned}
+x(t) &= t\cos(\theta) - e^{M|t|}\sin(0.3t)\sin(\theta) + X \\
+y(t) &= 42 + t\sin(\theta) + e^{M|t|}\sin(0.3t)\cos(\theta)
+\end{aligned}
+$$
 
 with unknowns: \(\theta\) (radians), \(M\), and \(X\). Bounds used in the fit:
 
