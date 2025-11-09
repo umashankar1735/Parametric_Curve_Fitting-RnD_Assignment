@@ -17,8 +17,29 @@ with unknowns: $\theta$ (radians), $M$, and $X$.
 - $0 < X < 100$
 - parameter range: $6 < t < 60$
 ---
-## What does the curve means(my understanding)
+## What does the curve means (my understanding)
 
+$x = t\cos\theta + X, \quad y = 42 + t\sin\theta$ —> this is just a straight line which changes its direction by $\theta$ as $t$ increases above horizontal. The line crosses $y=42$ when $t=0$, and here $X$ represents how far the line is shifted. Like for a better understanding, think it is a point moving along a tilted line.
+
+$e^{M|t|}\sin(0.3t)$ → this makes the point oscillate back and forth perpendicular to the line. Basically, it is a sideways push that determiones the point's oscillation. Here $\sin(0.3t)$ causes the motion & $e^{M|t|}$ tells the size of the motion.  
+In $e^{M|t|}$,
+- if $M>0$, the wave grow in size as you move rightside along the curve.  
+- if $M<0$, the wave shrinks and the motion damps out.  
+- if $M=0$, the amplitude stays constant (a ribbon like motion).  
+
+So, the point chooses to swirl like a spiral (wavy ribbon) around that line, instead a straight path.
+
+$\sin(0.3t)\sin(\theta)$ and $\sin(0.3t)\cos(\theta)$ → these terms rotate the spiral so that the point is exactly perpendicular to the line's motion. This way math helps the ripple always happens normal to the line, no matter the line’s tilt.
+
+The sine curve follow the diagonal direction given by the "point". Hence the point with having a sideways sway makes the motion look like a sine curve.
+
+So based on the above understanding and analysis of the problem my perspective on the line is:  
+**"A straight slanted line, shifted to start at (X, 42), with a sine wave drawn along it — the wave’s size expanding or shrinking depending on M.”**
+
+So, now we need to find the unknowns → $\theta$, $M$, and $X$.  
+And finally the **L1 distance (mean absolute difference).**  
+
+**LETS SOLVE THE PROBLEM 🙌🏼➕**
 
 ## Contents
 
@@ -138,8 +159,9 @@ Saved plot -> visualization.png
 - Uses a coordinate-descent loop to refine (\($\theta\$), X) and re-fit M at each step.
 - Computes a set-to-set L1 distance from sampled curve points to the nearest data points (reported in the run).
 
-These steps are implemented in `fit_curve.py` & these steps are in-detailed mentioned in the "Detailed Step-by-Step explanation" section in this readme file.
 ---
+These steps are implemented in `fit_curve.py` & these steps are in-detailed mentioned in the "Detailed Step-by-Step explanation" section in this readme file.
+
 
 ## Fitted results (run with provided `XY_DATA.csv`)
 
