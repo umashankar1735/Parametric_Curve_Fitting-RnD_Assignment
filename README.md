@@ -39,7 +39,7 @@ So based on the above understanding and analysis of the problem my perspective o
 So, now we need to find the unknowns → $\theta$, $M$, and $X$.  
 And finally the **L1 distance (mean absolute difference).**  
 
-**LETS SOLVE THE PROBLEM 🙌🏼➕**
+*MATHEMATICS PLAYED A VERY IMPORTANT ROLE IN MY STUDIES, SO LETS ANALYZE & SOLVE THE PROBLEM 🙌🏼➕*
 
 ## Contents
 
